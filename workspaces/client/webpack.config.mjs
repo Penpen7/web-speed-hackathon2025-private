@@ -5,9 +5,12 @@ import path from 'node:path';
 import webpack from 'webpack';
 /** @type {import('webpack').Configuration} */
 const config = {
+  cache: {
+    type: 'filesystem',
+  },
+  devtool: 'source-map',
   entry: './src/main.tsx',
   mode: 'production',
-  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -30,7 +33,7 @@ const config = {
                   useBuiltIns: 'entry',
                 },
               ],
-              ['@babel/preset-react', {runtime: 'automatic'}],
+              ['@babel/preset-react', { runtime: 'automatic' }],
               ['@babel/preset-typescript'],
             ],
           },
@@ -55,23 +58,20 @@ const config = {
   },
   output: {
     chunkFilename: 'chunk-[contenthash].js',
-    chunkFormat: "module",
+    chunkFormat: 'module',
     filename: 'main.js',
     path: path.resolve(import.meta.dirname, './dist'),
     publicPath: 'auto',
   },
   plugins: [
     // new webpack.optimize.LimitChunkCountPlugin({maxChunks: 1}),
-    new webpack.EnvironmentPlugin({API_BASE_URL: '/api', NODE_ENV: 'production'}),
+    new webpack.EnvironmentPlugin({ API_BASE_URL: '/api', NODE_ENV: 'production' }),
     // new BundleAnalyzerPlugin()
   ],
   resolve: {
     extensions: ['.js', '.cjs', '.mjs', '.ts', '.cts', '.mts', '.tsx', '.jsx'],
   },
-  cache: {
-    type: 'filesystem',
-  },
-  stats: "verbose"
+  stats: 'verbose',
 };
 
 export default config;

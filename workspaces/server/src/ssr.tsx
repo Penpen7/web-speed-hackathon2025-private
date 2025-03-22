@@ -1,29 +1,8 @@
-import {readdirSync} from 'node:fs';
 import path from 'node:path';
-import {fileURLToPath} from 'node:url';
+import { fileURLToPath } from 'node:url';
 
 import fastifyStatic from '@fastify/static';
-import {StoreProvider} from '@wsh-2025/client/src/app/StoreContext';
-import {createRoutes} from '@wsh-2025/client/src/app/createRoutes';
-import {createStore} from '@wsh-2025/client/src/app/createStore';
-import type {FastifyInstance} from 'fastify';
-import {createStandardRequest} from 'fastify-standard-request-reply';
-import htmlescape from 'htmlescape';
-import {StrictMode} from 'react';
-import {renderToString} from 'react-dom/server';
-import {createStaticHandler, createStaticRouter, StaticRouterProvider} from 'react-router';
-
-function getFiles(parent: string): string[] {
-  const dirents = readdirSync(parent, {withFileTypes: true});
-  return dirents
-    .filter((dirent) => dirent.isFile() && !dirent.name.startsWith('.'))
-    .map((dirent) => path.join(parent, dirent.name));
-}
-
-function getFilePaths(relativePath: string, rootDir: string): string[] {
-  const files = getFiles(path.resolve(rootDir, relativePath));
-  return files.map((file) => path.join('/', path.relative(rootDir, file)));
-}
+import type { FastifyInstance } from 'fastify';
 
 export function registerSsr(app: FastifyInstance): void {
   app.register(fastifyStatic, {
@@ -38,10 +17,7 @@ export function registerSsr(app: FastifyInstance): void {
     reply.status(404).send();
   });
 
-  app.get('/*', async (req, reply) => {
-    // @ts-expect-error ................
-    const request = createStandardRequest(req, reply);
-
+  app.get('/*', async (_, reply) => {
     reply.type('text/html').send(/* html */ `
       <!DOCTYPE html>
       <html lang="ja">
