@@ -19,7 +19,6 @@ function main() {
   console.log('main');
   const store = createStore({});
   const router = createBrowserRouter(createRoutes(store), {});
-  console.log('main', store, router);
 
   hydrateRoot(
     document,
@@ -30,5 +29,4 @@ function main() {
     </StrictMode>,
   );
 }
-
-document.addEventListener('DOMContentLoaded', main);
+main()
