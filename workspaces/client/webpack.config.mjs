@@ -7,6 +7,7 @@ import webpack from 'webpack';
 const config = {
   entry: './src/main.tsx',
   mode: 'production',
+  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -18,6 +19,7 @@ const config = {
         use: {
           loader: 'babel-loader',
           options: {
+            cacheDirectory: true,
             presets: [
               [
                 '@babel/preset-env',
@@ -60,12 +62,16 @@ const config = {
   },
   plugins: [
     // new webpack.optimize.LimitChunkCountPlugin({maxChunks: 1}),
-    new webpack.EnvironmentPlugin({API_BASE_URL: '/api', NODE_ENV: ''}),
+    new webpack.EnvironmentPlugin({API_BASE_URL: '/api', NODE_ENV: 'production'}),
     // new BundleAnalyzerPlugin()
   ],
   resolve: {
     extensions: ['.js', '.cjs', '.mjs', '.ts', '.cts', '.mts', '.tsx', '.jsx'],
   },
+  cache: {
+    type: 'filesystem',
+  },
+  stats: "verbose"
 };
 
 export default config;
