@@ -16,7 +16,6 @@ declare global {
 }
 
 function main() {
-  console.log('main');
   const store = createStore({});
   const router = createBrowserRouter(createRoutes(store), {});
   const root = document.getElementById('root');
@@ -32,4 +31,5 @@ function main() {
     </StrictMode>
   );
 }
+
 main();
