@@ -1,37 +1,37 @@
-import { FFmpeg } from '@ffmpeg/ffmpeg';
-import { StandardSchemaV1 } from '@standard-schema/spec';
+import {FFmpeg} from '@ffmpeg/ffmpeg';
+import {StandardSchemaV1} from '@standard-schema/spec';
 import * as schema from '@wsh-2025/schema/src/api/schema';
-import { Parser } from 'm3u8-parser';
-import { use } from 'react';
+import {Parser} from 'm3u8-parser';
+import {use} from 'react';
+import {toBlobURL} from '@ffmpeg/util'
 
 interface Params {
   episode: StandardSchemaV1.InferOutput<typeof schema.getEpisodeByIdResponse>;
 }
 
-async function getSeekThumbnail({ episode }: Params) {
+async function getSeekThumbnail({episode}: Params) {
   // HLS のプレイリストを取得
   const playlistUrl = `/streams/episode/${episode.id}/playlist.m3u8`;
   const parser = new Parser();
+
   parser.push(await fetch(playlistUrl).then((res) => res.text()));
   parser.end();
 
   // FFmpeg の初期化
+  const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd'
   const ffmpeg = new FFmpeg();
   await ffmpeg.load({
-    coreURL: await import('@ffmpeg/core?arraybuffer').then(({ default: b }) => {
-      return URL.createObjectURL(new Blob([b], { type: 'text/javascript' }));
-    }),
-    wasmURL: await import('@ffmpeg/core/wasm?arraybuffer').then(({ default: b }) => {
-      return URL.createObjectURL(new Blob([b], { type: 'application/wasm' }));
-    }),
-  });
+    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+  }
+  );
 
   // 動画のセグメントファイルを取得
   const segmentFiles = await Promise.all(
     parser.manifest.segments.map((s) => {
       return fetch(s.uri).then(async (res) => {
         const binary = await res.arrayBuffer();
-        return { binary, id: Math.random().toString(36).slice(2) };
+        return {binary, id: Math.random().toString(36).slice(2)};
       });
     }),
   );
@@ -64,13 +64,13 @@ async function getSeekThumbnail({ episode }: Params) {
   const output = await ffmpeg.readFile('preview.jpg');
   ffmpeg.terminate();
 
-  return URL.createObjectURL(new Blob([output], { type: 'image/jpeg' }));
+  return URL.createObjectURL(new Blob([output], {type: 'image/jpeg'}));
 }
 
 const weakMap = new WeakMap<object, Promise<string>>();
 
-export const useSeekThumbnail = ({ episode }: Params): string => {
-  const promise = weakMap.get(episode) ?? getSeekThumbnail({ episode });
+export const useSeekThumbnail = ({episode}: Params): string => {
+  const promise = weakMap.get(episode) ?? getSeekThumbnail({episode});
   weakMap.set(episode, promise);
   return use(promise);
 };
