@@ -22,9 +22,10 @@ export default defineConfig({
   retries: 0,
   testDir: './src',
   timeout: 300_000,
+  workers: 2,
   use: {
     baseURL: BASE_URL,
-    headless: true,
+    headless: false,
     trace: 'off',
   },
 });
