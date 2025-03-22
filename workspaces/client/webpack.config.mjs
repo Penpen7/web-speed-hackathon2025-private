@@ -1,6 +1,6 @@
 import path from 'node:path';
 
-import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
+// import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 
 import webpack from 'webpack';
 /** @type {import('webpack').Configuration} */
@@ -53,15 +53,15 @@ const config = {
   },
   output: {
     chunkFilename: 'chunk-[contenthash].js',
-    chunkFormat: false,
+    chunkFormat: "module",
     filename: 'main.js',
     path: path.resolve(import.meta.dirname, './dist'),
     publicPath: 'auto',
   },
   plugins: [
-    new webpack.optimize.LimitChunkCountPlugin({maxChunks: 1}),
+    // new webpack.optimize.LimitChunkCountPlugin({maxChunks: 1}),
     new webpack.EnvironmentPlugin({API_BASE_URL: '/api', NODE_ENV: ''}),
-    new BundleAnalyzerPlugin()
+    // new BundleAnalyzerPlugin()
   ],
   resolve: {
     extensions: ['.js', '.cjs', '.mjs', '.ts', '.cts', '.mts', '.tsx', '.jsx'],
