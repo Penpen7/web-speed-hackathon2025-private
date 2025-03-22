@@ -1,4 +1,3 @@
-import { IconifyJSON } from '@iconify/types';
 import presetIcons from '@unocss/preset-icons/browser';
 import presetWind3 from '@unocss/preset-wind3';
 import initUnocssRuntime, { defineConfig } from '@unocss/runtime';
@@ -21,8 +20,7 @@ async function init() {
           getCSS: () => /* css */ `
           @view-transition {
             navigation: auto;
-          }
-          html,
+          } html,
           :host {
             font-family: 'Noto Sans JP', sans-serif !important;
           }
@@ -49,17 +47,13 @@ async function init() {
         presetWind3(),
         presetIcons({
           collections: {
-            bi: () => import('@iconify/json/json/bi.json').then((m): IconifyJSON => m.default as IconifyJSON),
-            bx: () => import('@iconify/json/json/bx.json').then((m): IconifyJSON => m.default as IconifyJSON),
-            'fa-regular': () =>
-              import('@iconify/json/json/fa-regular.json').then((m): IconifyJSON => m.default as IconifyJSON),
-            'fa-solid': () =>
-              import('@iconify/json/json/fa-solid.json').then((m): IconifyJSON => m.default as IconifyJSON),
-            fluent: () => import('@iconify/json/json/fluent.json').then((m): IconifyJSON => m.default as IconifyJSON),
-            'line-md': () =>
-              import('@iconify/json/json/line-md.json').then((m): IconifyJSON => m.default as IconifyJSON),
-            'material-symbols': () =>
-              import('@iconify/json/json/material-symbols.json').then((m): IconifyJSON => m.default as IconifyJSON),
+            bi: () => import('@iconify-json/bi/icons.json').then((m) => m.default),
+            bx: () => import('@iconify-json/bx/icons.json').then((m) => m.default),
+            'fa-regular': () => import('@iconify-json/fa-regular/icons.json').then((m) => m.default),
+            'fa-solid': () => import('@iconify-json/fa-solid/icons.json').then((m) => m.default),
+            fluent: () => import('@iconify-json/fluent/icons.json').then((m) => m.default),
+            'line-md': () => import('@iconify-json/line-md/icons.json').then((m) => m.default),
+            'material-symbols': () => import('@iconify-json/material-symbols/icons.json').then((m) => m.default),
           },
         }),
       ],

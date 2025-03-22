@@ -1,12 +1,15 @@
 import path from 'node:path';
 
-import webpack from 'webpack';
+// import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 
+import webpack from 'webpack';
 /** @type {import('webpack').Configuration} */
 const config = {
-  devtool: 'inline-source-map',
+  cache: {
+    type: 'filesystem',
+  },
   entry: './src/main.tsx',
-  mode: 'none',
+  mode: 'production',
   module: {
     rules: [
       {
@@ -18,6 +21,7 @@ const config = {
         use: {
           loader: 'babel-loader',
           options: {
+            cacheDirectory: true,
             presets: [
               [
                 '@babel/preset-env',
@@ -53,22 +57,20 @@ const config = {
   },
   output: {
     chunkFilename: 'chunk-[contenthash].js',
-    chunkFormat: false,
+    chunkFormat: 'module',
     filename: 'main.js',
     path: path.resolve(import.meta.dirname, './dist'),
     publicPath: 'auto',
   },
   plugins: [
-    new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
-    new webpack.EnvironmentPlugin({ API_BASE_URL: '/api', NODE_ENV: '' }),
+    // new webpack.optimize.LimitChunkCountPlugin({maxChunks: 1}),
+    new webpack.EnvironmentPlugin({ API_BASE_URL: '/api', NODE_ENV: 'production' }),
+    // new BundleAnalyzerPlugin()
   ],
   resolve: {
-    alias: {
-      '@ffmpeg/core$': path.resolve(import.meta.dirname, 'node_modules', '@ffmpeg/core/dist/umd/ffmpeg-core.js'),
-      '@ffmpeg/core/wasm$': path.resolve(import.meta.dirname, 'node_modules', '@ffmpeg/core/dist/umd/ffmpeg-core.wasm'),
-    },
     extensions: ['.js', '.cjs', '.mjs', '.ts', '.cts', '.mts', '.tsx', '.jsx'],
   },
+  stats: 'verbose',
 };
 
 export default config;
