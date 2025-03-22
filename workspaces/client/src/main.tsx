@@ -3,7 +3,7 @@ import '@wsh-2025/client/src/setups/luxon';
 import '@wsh-2025/client/src/setups/unocss';
 
 import { StrictMode } from 'react';
-import { hydrateRoot } from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, HydrationState, RouterProvider } from 'react-router';
 
 import { StoreProvider } from '@wsh-2025/client/src/app/StoreContext';
@@ -19,14 +19,17 @@ function main() {
   console.log('main');
   const store = createStore({});
   const router = createBrowserRouter(createRoutes(store), {});
+  const root = document.getElementById('root');
+  if (!root) {
+    throw new Error('Root element not found');
+  }
 
-  hydrateRoot(
-    document,
+  createRoot(root).render(
     <StrictMode>
       <StoreProvider createStore={() => store}>
         <RouterProvider router={router} />
       </StoreProvider>
-    </StrictMode>,
+    </StrictMode>
   );
 }
-document.addEventListener('DOMContentLoaded', main);
+main();
