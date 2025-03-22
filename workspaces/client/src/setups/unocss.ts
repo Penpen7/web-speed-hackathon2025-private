@@ -1,6 +1,6 @@
 import presetIcons from '@unocss/preset-icons/browser';
 import presetWind3 from '@unocss/preset-wind3';
-import initUnocssRuntime, { defineConfig } from '@unocss/runtime';
+import initUnocssRuntime, {defineConfig} from '@unocss/runtime';
 
 async function init() {
   await initUnocssRuntime({
@@ -13,15 +13,14 @@ async function init() {
       },
       preflights: [
         {
-          getCSS: () => import('@unocss/reset/tailwind-compat.css?raw').then(({ default: css }) => css),
+          getCSS: () => import('@unocss/reset/tailwind-compat.css?raw').then(({default: css}) => css),
           layer: 'reset',
         },
         {
           getCSS: () => /* css */ `
           @view-transition {
             navigation: auto;
-          }
-          html,
+          } html,
           :host {
             font-family: 'Noto Sans JP', sans-serif !important;
           }
@@ -44,7 +43,20 @@ async function init() {
         `,
         },
       ],
-      presets: [presetWind3(), presetIcons()],
+      presets: [
+        presetWind3(),
+        presetIcons({
+          collections: {
+            bi: () => import('@iconify-json/bi/icons.json').then((m) => m.default),
+            bx: () => import('@iconify-json/bx/icons.json').then((m) => m.default),
+            'fa-regular': () => import('@iconify-json/fa-regular/icons.json').then((m) => m.default),
+            'fa-solid': () => import('@iconify-json/fa-solid/icons.json').then((m) => m.default),
+            fluent: () => import('@iconify-json/fluent/icons.json').then((m) => m.default),
+            'line-md': () => import('@iconify-json/line-md/icons.json').then((m) => m.default),
+            'material-symbols': () => import('@iconify-json/material-symbols/icons.json').then((m) => m.default),
+          },
+        }),
+      ],
     }),
   });
 }
