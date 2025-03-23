@@ -8,7 +8,6 @@ const config = {
   cache: {
     type: 'filesystem',
   },
-  devtool: 'source-map',
   entry: './src/main.tsx',
   mode: 'production',
   module: {
