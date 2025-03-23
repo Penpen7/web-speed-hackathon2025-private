@@ -494,22 +494,31 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
               series: {},
               episode: {
                 with: {
-                  series: {
-                    with: {
-                      episodes: {
-                        orderBy(episode, { asc }) {
-                          return asc(episode.order);
-                        },
-                      },
-                    },
-                  },
+                  series: {},
                 },
               },
             },
           },
         },
       });
-      reply.code(200).send(modules);
+
+      // description は空文字列にする
+      reply.code(200).send(
+        modules.map((module) => {
+          const items = module.items.map((item) => {
+            if (item.episode?.series) {
+              item.episode.series.description = '';
+            }
+
+            return item;
+          });
+
+          return {
+            ...module,
+            items,
+          };
+        }),
+      );
       return reply;
     },
   });
