@@ -1,4 +1,3 @@
-import { ElementScrollRestoration } from '@epic-web/restore-scroll';
 import { StandardSchemaV1 } from '@standard-schema/spec';
 import * as schema from '@wsh-2025/schema/src/api/schema';
 import { ArrayValues } from 'type-fest';
@@ -17,19 +16,16 @@ export const CarouselSection = ({ module }: Props) => {
         <h2 className="mb-[16px] w-full text-[22px] font-bold">{module.title}</h2>
         <div
           key={module.id}
-          className={`-mx-6 grid auto-cols-[minmax(276px,1fr)] grid-flow-col gap-x-3 overflow-x-auto overflow-y-hidden px-6`}
-          data-scroll-restore={`carousel-${module.id}`}
+          className={`smooth-scroll -mx-6 grid snap-x snap-mandatory auto-cols-[minmax(276px,1fr)] grid-flow-col gap-x-3 overflow-x-auto overflow-y-hidden px-6`}
         >
           {module.items.map((item) => (
-            <div key={item.id} className="overflow-hidden">
+            <div key={item.id} className="snap-start overflow-hidden">
               {item.series != null ? <SeriesItem series={item.series} /> : null}
               {item.episode != null ? <EpisodeItem episode={item.episode} /> : null}
             </div>
           ))}
         </div>
       </div>
-
-      <ElementScrollRestoration direction="horizontal" elementQuery={`[data-scroll-restore="carousel-${module.id}"]`} />
     </>
   );
 };
