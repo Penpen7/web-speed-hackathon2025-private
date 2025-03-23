@@ -215,15 +215,7 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
           return eq(episode.id, req.params.episodeId);
         },
         with: {
-          series: {
-            with: {
-              episodes: {
-                orderBy(episode, { asc }) {
-                  return asc(episode.order);
-                },
-              },
-            },
-          },
+          series: {},
         },
       });
       if (episode == null) {
