@@ -15,7 +15,18 @@ async function main() {
   const app = fastify();
   app.register(compression);
 
-  app.addHook('onSend', async (_req, reply) => {
+  app.addHook('onSend', async (req, reply) => {
+    // webp, ts, gif, svg, m3u8はキャッシュする
+    if (
+      req.url.endsWith('.webp') ||
+      req.url.endsWith('.ts') ||
+      req.url.endsWith('.gif') ||
+      req.url.endsWith('.svg') ||
+      req.url.endsWith('.m3u8')
+    ) {
+      reply.header('cache-control', 'public, max-age=31536000, immutable');
+      return;
+    }
     reply.header('cache-control', 'no-store');
   });
   app.register(cors, {
