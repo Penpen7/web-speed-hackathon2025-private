@@ -14,7 +14,7 @@ export const SeriesItem = ({ series }: Props) => {
   return (
     <NavLink
       viewTransition
-      className="hover:opercity-75 block w-full cursor-pointer overflow-hidden"
+      className="hover:opacity-75 block w-full cursor-pointer overflow-hidden"
       to={`/series/${series.id}`}
     >
       {({ isTransitioning }) => {
