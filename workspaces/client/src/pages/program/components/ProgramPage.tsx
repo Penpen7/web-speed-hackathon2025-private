@@ -1,43 +1,43 @@
-import { DateTime } from 'luxon';
-import { useEffect, useRef } from 'react';
+import {DateTime} from 'luxon';
+import {useEffect, useRef} from 'react';
 import Ellipsis from 'react-ellipsis-component';
-import { Flipped } from 'react-flip-toolkit';
-import { Link, Params, useNavigate, useParams } from 'react-router';
-import { useUpdate } from 'react-use';
+import {Flipped} from 'react-flip-toolkit';
+import {Link, Params, useNavigate, useParams} from 'react-router';
+import {useUpdate} from 'react-use';
 import invariant from 'tiny-invariant';
 
-import { createStore } from '@wsh-2025/client/src/app/createStore';
-import { Player } from '@wsh-2025/client/src/features/player/components/Player';
-import { PlayerType } from '@wsh-2025/client/src/features/player/constants/player_type';
-import { useProgramById } from '@wsh-2025/client/src/features/program/hooks/useProgramById';
-import { RecommendedSection } from '@wsh-2025/client/src/features/recommended/components/RecommendedSection';
-import { useRecommended } from '@wsh-2025/client/src/features/recommended/hooks/useRecommended';
-import { SeriesEpisodeList } from '@wsh-2025/client/src/features/series/components/SeriesEpisodeList';
-import { useTimetable } from '@wsh-2025/client/src/features/timetable/hooks/useTimetable';
-import { PlayerController } from '@wsh-2025/client/src/pages/program/components/PlayerController';
-import { usePlayerRef } from '@wsh-2025/client/src/pages/program/hooks/usePlayerRef';
+import {createStore} from '@wsh-2025/client/src/app/createStore';
+import {Player} from '@wsh-2025/client/src/features/player/components/Player';
+import {PlayerType} from '@wsh-2025/client/src/features/player/constants/player_type';
+import {useProgramById} from '@wsh-2025/client/src/features/program/hooks/useProgramById';
+import {RecommendedSection} from '@wsh-2025/client/src/features/recommended/components/RecommendedSection';
+import {useRecommended} from '@wsh-2025/client/src/features/recommended/hooks/useRecommended';
+import {SeriesEpisodeList} from '@wsh-2025/client/src/features/series/components/SeriesEpisodeList';
+import {useTimetable} from '@wsh-2025/client/src/features/timetable/hooks/useTimetable';
+import {PlayerController} from '@wsh-2025/client/src/pages/program/components/PlayerController';
+import {usePlayerRef} from '@wsh-2025/client/src/pages/program/hooks/usePlayerRef';
 
-export const prefetch = async (store: ReturnType<typeof createStore>, { programId }: Params) => {
+export const prefetch = async (store: ReturnType<typeof createStore>, {programId}: Params) => {
   invariant(programId);
 
   const now = DateTime.now();
   const since = now.startOf('day').toISO();
   const until = now.endOf('day').toISO();
 
-  const program = await store.getState().features.program.fetchProgramById({ programId });
+  const program = await store.getState().features.program.fetchProgramById({programId});
   const channels = await store.getState().features.channel.fetchChannels();
-  const timetable = await store.getState().features.timetable.fetchTimetable({ since, until });
+  const timetable = await store.getState().features.timetable.fetchTimetable({since, until});
   const modules = await store
     .getState()
-    .features.recommended.fetchRecommendedModulesByReferenceId({ referenceId: programId });
-  return { channels, modules, program, timetable };
+    .features.recommended.fetchRecommendedModulesByReferenceId({referenceId: programId});
+  return {channels, modules, program, timetable};
 };
 
 export const ProgramPage = () => {
-  const { programId } = useParams();
+  const {programId} = useParams();
   invariant(programId);
 
-  const program = useProgramById({ programId });
+  const program = useProgramById({programId});
   invariant(program);
 
   const timetable = useTimetable();
@@ -45,7 +45,7 @@ export const ProgramPage = () => {
     return DateTime.fromISO(program.endAt).equals(DateTime.fromISO(p.startAt));
   });
 
-  const modules = useRecommended({ referenceId: programId });
+  const modules = useRecommended({referenceId: programId});
 
   const playerRef = usePlayerRef();
 
@@ -80,7 +80,7 @@ export const ProgramPage = () => {
         void navigate(`/programs/${nextProgram.id}`, {
           preventScrollReset: true,
           replace: true,
-          state: { loading: 'none' },
+          state: {loading: 'none'},
         });
       } else {
         isArchivedRef.current = true;
@@ -127,7 +127,7 @@ export const ProgramPage = () => {
               </div>
             ) : (
               <div className="relative size-full">
-                <img alt="" className="h-auto w-full" src={program.thumbnailUrl} />
+                <img alt="" className="h-auto w-full" src={program.thumbnailUrl} loading="lazy" />
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#00000077] p-[24px]">
                   <p className="mb-[32px] text-[24px] font-bold text-[#ffffff]">

@@ -1,21 +1,21 @@
-import { StandardSchemaV1 } from '@standard-schema/spec';
+import {StandardSchemaV1} from '@standard-schema/spec';
 import * as schema from '@wsh-2025/schema/src/api/schema';
-import { DateTime } from 'luxon';
-import { ReactElement, useEffect, useRef, useState } from 'react';
+import {DateTime} from 'luxon';
+import {ReactElement, useEffect, useRef, useState} from 'react';
 import Ellipsis from 'react-ellipsis-component';
-import { ArrayValues } from 'type-fest';
+import {ArrayValues} from 'type-fest';
 
-import { ProgramDetailDialog } from '@wsh-2025/client/src/pages/timetable/components/ProgramDetailDialog';
-import { useColumnWidth } from '@wsh-2025/client/src/pages/timetable/hooks/useColumnWidth';
-import { useCurrentUnixtimeMs } from '@wsh-2025/client/src/pages/timetable/hooks/useCurrentUnixtimeMs';
-import { useSelectedProgramId } from '@wsh-2025/client/src/pages/timetable/hooks/useSelectedProgramId';
+import {ProgramDetailDialog} from '@wsh-2025/client/src/pages/timetable/components/ProgramDetailDialog';
+import {useColumnWidth} from '@wsh-2025/client/src/pages/timetable/hooks/useColumnWidth';
+import {useCurrentUnixtimeMs} from '@wsh-2025/client/src/pages/timetable/hooks/useCurrentUnixtimeMs';
+import {useSelectedProgramId} from '@wsh-2025/client/src/pages/timetable/hooks/useSelectedProgramId';
 
 interface Props {
   height: number;
   program: ArrayValues<StandardSchemaV1.InferOutput<typeof schema.getTimetableResponse>>;
 }
 
-export const Program = ({ height, program }: Props): ReactElement => {
+export const Program = ({height, program}: Props): ReactElement => {
   const width = useColumnWidth(program.channelId);
 
   const [selectedProgramId, setProgram] = useSelectedProgramId();
@@ -49,7 +49,7 @@ export const Program = ({ height, program }: Props): ReactElement => {
     <>
       <button
         className={`h-[${height}px] w-auto border-[1px] border-solid border-[#000000] bg-[${isBroadcasting ? '#FCF6E5' : '#212121'}] px-[12px] py-[8px] text-left opacity-${isArchived ? 50 : 100} hover:brightness-${isArchived ? 200 : 125} cursor-pointer`}
-        style={{ width }}
+        style={{width}}
         type="button"
         onClick={onClick}
       >
@@ -68,6 +68,7 @@ export const Program = ({ height, program }: Props): ReactElement => {
           </div>
           <div className={`opacity-${shouldImageBeVisible ? 100 : 0} w-full`}>
             <img
+              loading='lazy'
               ref={imageRef}
               alt=""
               className="pointer-events-none w-full rounded-[8px] border-[2px] border-solid border-[#FFFFFF1F]"

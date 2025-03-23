@@ -1,19 +1,19 @@
 import FeatureExplainImageUrl from '@wsh-2025/client/assets/timetable/feature-explain.png';
-import { Dialog } from '@wsh-2025/client/src/features/dialog/components/Dialog';
-import { useCloseNewFeatureDialog } from '@wsh-2025/client/src/pages/timetable/hooks/useCloseNewFeatureDialog';
+import {Dialog} from '@wsh-2025/client/src/features/dialog/components/Dialog';
+import {useCloseNewFeatureDialog} from '@wsh-2025/client/src/pages/timetable/hooks/useCloseNewFeatureDialog';
 
 interface Props {
   isOpen: boolean;
 }
 
-export const NewTimetableFeatureDialog = ({ isOpen }: Props) => {
+export const NewTimetableFeatureDialog = ({isOpen}: Props) => {
   const onClose = useCloseNewFeatureDialog();
 
   return (
     <Dialog isOpen={isOpen} onClose={onClose}>
       <div className="size-full">
         <div className="mb-[16px] flex w-full flex-row justify-center">
-          <img className="object-contain" height={36} src="/public/arema.svg" width={98} />
+          <img className="object-contain" height={36} src="/public/arema.svg" width={98} loading='lazy' />
         </div>
 
         <h2 className="mb-[24px] text-center text-[24px] font-bold">拡大・縮小機能を新しく追加</h2>
@@ -29,7 +29,7 @@ export const NewTimetableFeatureDialog = ({ isOpen }: Props) => {
           引き続き皆様に快適にご利用いただけるよう、サービスの改善に努めてまいります。今後ともどうぞよろしくお願いいたします。
         </p>
 
-        <img alt="" className="mb-[24px] w-full" src={FeatureExplainImageUrl} />
+        <img alt="" className="mb-[24px] w-full" src={FeatureExplainImageUrl} loading='lazy' />
 
         <div className="flex flex-row justify-center">
           <button

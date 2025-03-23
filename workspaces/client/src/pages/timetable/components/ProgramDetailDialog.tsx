@@ -1,19 +1,19 @@
-import { StandardSchemaV1 } from '@standard-schema/spec';
+import {StandardSchemaV1} from '@standard-schema/spec';
 import * as schema from '@wsh-2025/schema/src/api/schema';
-import { ReactElement } from 'react';
-import { Link } from 'react-router';
-import { ArrayValues } from 'type-fest';
+import {ReactElement} from 'react';
+import {Link} from 'react-router';
+import {ArrayValues} from 'type-fest';
 
-import { Dialog } from '@wsh-2025/client/src/features/dialog/components/Dialog';
-import { useEpisode } from '@wsh-2025/client/src/pages/timetable/hooks/useEpisode';
-import { useSelectedProgramId } from '@wsh-2025/client/src/pages/timetable/hooks/useSelectedProgramId';
+import {Dialog} from '@wsh-2025/client/src/features/dialog/components/Dialog';
+import {useEpisode} from '@wsh-2025/client/src/pages/timetable/hooks/useEpisode';
+import {useSelectedProgramId} from '@wsh-2025/client/src/pages/timetable/hooks/useSelectedProgramId';
 
 interface Props {
   isOpen: boolean;
   program: ArrayValues<StandardSchemaV1.InferOutput<typeof schema.getTimetableResponse>>;
 }
 
-export const ProgramDetailDialog = ({ isOpen, program }: Props): ReactElement => {
+export const ProgramDetailDialog = ({isOpen, program}: Props): ReactElement => {
   const episode = useEpisode(program.episodeId);
   const [, setProgram] = useSelectedProgramId();
 
@@ -34,6 +34,7 @@ export const ProgramDetailDialog = ({ isOpen, program }: Props): ReactElement =>
           alt=""
           className="mb-[24px] w-full rounded-[8px] border-[2px] border-solid border-[#FFFFFF1F]"
           src={program.thumbnailUrl}
+          loading='lazy'
         />
 
         {episode != null ? (
@@ -48,6 +49,7 @@ export const ProgramDetailDialog = ({ isOpen, program }: Props): ReactElement =>
               alt=""
               className="mb-[24px] w-full rounded-[8px] border-[2px] border-solid border-[#FFFFFF1F]"
               src={episode.thumbnailUrl}
+              loading='lazy'
             />
           </>
         ) : null}
