@@ -1,6 +1,6 @@
 import 'zod-openapi/extend';
 
-import { randomBytes } from 'node:crypto';
+import {randomBytes} from 'node:crypto';
 
 import fastifyCookie from '@fastify/cookie';
 import fastifySession from '@fastify/session';
@@ -9,7 +9,7 @@ import fastifySwaggerUi from '@fastify/swagger-ui';
 import * as databaseSchema from '@wsh-2025/schema/src/database/schema';
 import * as schema from '@wsh-2025/schema/src/openapi/schema';
 import * as bcrypt from 'bcrypt';
-import type { FastifyInstance } from 'fastify';
+import type {FastifyInstance} from 'fastify';
 import {
   fastifyZodOpenApiPlugin,
   type FastifyZodOpenApiSchema,
@@ -19,10 +19,10 @@ import {
   serializerCompiler,
   validatorCompiler,
 } from 'fastify-zod-openapi';
-import { z } from 'zod';
-import type { ZodOpenApiVersion } from 'zod-openapi';
+import {z} from 'zod';
+import type {ZodOpenApiVersion} from 'zod-openapi';
 
-import { getDatabase, initializeDatabase } from '@wsh-2025/server/src/drizzle/database';
+import {getDatabase, initializeDatabase} from '@wsh-2025/server/src/drizzle/database';
 
 export async function registerApi(app: FastifyInstance): Promise<void> {
   app.setValidatorCompiler(validatorCompiler);
@@ -96,10 +96,10 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
       const database = getDatabase();
 
       const channels = await database.query.channel.findMany({
-        orderBy(channel, { asc }) {
+        orderBy(channel, {asc}) {
           return asc(channel.id);
         },
-        where(channel, { inArray }) {
+        where(channel, {inArray}) {
           if (req.query.channelIds != null) {
             const channelIds = req.query.channelIds.split(',');
             return inArray(channel.id, channelIds);
@@ -132,7 +132,7 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
       const database = getDatabase();
 
       const channel = await database.query.channel.findFirst({
-        where(channel, { eq }) {
+        where(channel, {eq}) {
           return eq(channel.id, req.params.channelId);
         },
       });
@@ -164,10 +164,10 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
       const database = getDatabase();
 
       const episodes = await database.query.episode.findMany({
-        orderBy(episode, { asc }) {
+        orderBy(episode, {asc}) {
           return asc(episode.id);
         },
-        where(episode, { inArray }) {
+        where(episode, {inArray}) {
           if (req.query.episodeIds != null) {
             const episodeIds = req.query.episodeIds.split(',');
             return inArray(episode.id, episodeIds);
@@ -178,7 +178,7 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
           series: {
             with: {
               episodes: {
-                orderBy(episode, { asc }) {
+                orderBy(episode, {asc}) {
                   return asc(episode.order);
                 },
               },
@@ -211,14 +211,14 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
       const database = getDatabase();
 
       const episode = await database.query.episode.findFirst({
-        where(episode, { eq }) {
+        where(episode, {eq}) {
           return eq(episode.id, req.params.episodeId);
         },
         with: {
           series: {
             with: {
               episodes: {
-                orderBy(episode, { asc }) {
+                orderBy(episode, {asc}) {
                   return asc(episode.order);
                 },
               },
@@ -254,10 +254,10 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
       const database = getDatabase();
 
       const series = await database.query.series.findMany({
-        orderBy(series, { asc }) {
+        orderBy(series, {asc}) {
           return asc(series.id);
         },
-        where(series, { inArray }) {
+        where(series, {inArray}) {
           if (req.query.seriesIds != null) {
             const seriesIds = req.query.seriesIds.split(',');
             return inArray(series.id, seriesIds);
@@ -266,7 +266,7 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
         },
         with: {
           episodes: {
-            orderBy(episode, { asc }) {
+            orderBy(episode, {asc}) {
               return asc(episode.order);
             },
             with: {
@@ -300,12 +300,12 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
       const database = getDatabase();
 
       const series = await database.query.series.findFirst({
-        where(series, { eq }) {
+        where(series, {eq}) {
           return eq(series.id, req.params.seriesId);
         },
         with: {
           episodes: {
-            orderBy(episode, { asc }) {
+            orderBy(episode, {asc}) {
               return asc(episode.order);
             },
             with: {
@@ -342,10 +342,10 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
       const database = getDatabase();
 
       const programs = await database.query.program.findMany({
-        orderBy(program, { asc }) {
+        orderBy(program, {asc}) {
           return asc(program.startAt);
         },
-        where(program, { between, sql }) {
+        where(program, {between, sql}) {
           // 競技のため、時刻のみで比較する
           return between(
             program.startAt,
@@ -379,10 +379,10 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
       const database = getDatabase();
 
       const programs = await database.query.program.findMany({
-        orderBy(program, { asc }) {
+        orderBy(program, {asc}) {
           return asc(program.startAt);
         },
-        where(program, { inArray }) {
+        where(program, {inArray}) {
           if (req.query.programIds != null) {
             const programIds = req.query.programIds.split(',');
             return inArray(program.id, programIds);
@@ -396,7 +396,7 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
               series: {
                 with: {
                   episodes: {
-                    orderBy(episode, { asc }) {
+                    orderBy(episode, {asc}) {
                       return asc(episode.order);
                     },
                   },
@@ -431,7 +431,7 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
       const database = getDatabase();
 
       const program = await database.query.program.findFirst({
-        where(program, { eq }) {
+        where(program, {eq}) {
           return eq(program.id, req.params.programId);
         },
         with: {
@@ -441,7 +441,7 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
               series: {
                 with: {
                   episodes: {
-                    orderBy(episode, { asc }) {
+                    orderBy(episode, {asc}) {
                       return asc(episode.order);
                     },
                   },
@@ -479,30 +479,22 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
       const database = getDatabase();
 
       const modules = await database.query.recommendedModule.findMany({
-        orderBy(module, { asc }) {
+        orderBy(module, {asc}) {
           return asc(module.order);
         },
-        where(module, { eq }) {
+        where(module, {eq}) {
           return eq(module.referenceId, req.params.referenceId);
         },
         with: {
           items: {
-            orderBy(item, { asc }) {
+            orderBy(item, {asc}) {
               return asc(item.order);
             },
             with: {
               series: {},
               episode: {
                 with: {
-                  series: {
-                    with: {
-                      episodes: {
-                        orderBy(episode, { asc }) {
-                          return asc(episode.order);
-                        },
-                      },
-                    },
-                  },
+                  series: {},
                 },
               },
             },
@@ -534,7 +526,7 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
       const database = getDatabase();
 
       const user = await database.query.user.findFirst({
-        where(user, { eq }) {
+        where(user, {eq}) {
           return eq(user.email, req.body.email);
         },
       });
@@ -542,7 +534,7 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
         return reply.code(401).send();
       }
 
-      const ret = schema.signInResponse.parse({ id: user.id, email: user.email });
+      const ret = schema.signInResponse.parse({id: user.id, email: user.email});
 
       req.session.set('id', ret.id.toString());
       reply.code(200).send(user);
@@ -570,7 +562,7 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
       const database = getDatabase();
 
       const hasAlreadyExists = await database.query.user.findFirst({
-        where(user, { eq }) {
+        where(user, {eq}) {
           return eq(user.email, req.body.email);
         },
       });
@@ -591,7 +583,7 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
         return reply.code(500).send();
       }
 
-      const ret = schema.signUpResponse.parse({ id: user.id, email: user.email });
+      const ret = schema.signUpResponse.parse({id: user.id, email: user.email});
 
       req.session.set('id', ret.id.toString());
       reply.code(200).send(ret);
@@ -623,7 +615,7 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
       }
 
       const user = await database.query.user.findFirst({
-        where(user, { eq }) {
+        where(user, {eq}) {
           return eq(user.id, Number(userId));
         },
       });
