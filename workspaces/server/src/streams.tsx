@@ -1,13 +1,13 @@
-import {randomBytes} from 'node:crypto';
+import { randomBytes } from 'node:crypto';
 import path from 'node:path';
-import {fileURLToPath} from 'node:url';
+import { fileURLToPath } from 'node:url';
 
 import fastifyStatic from '@fastify/static';
 import dedent from 'dedent';
-import type {FastifyInstance} from 'fastify';
-import {DateTime} from 'luxon';
+import type { FastifyInstance } from 'fastify';
+import { DateTime } from 'luxon';
 
-import {getDatabase} from '@wsh-2025/server/src/drizzle/database';
+import { getDatabase } from '@wsh-2025/server/src/drizzle/database';
 
 const SEQUENCE_DURATION_MS = 2 * 1000;
 const SEQUENCE_COUNT_PER_PLAYLIST = 10;
@@ -24,12 +24,12 @@ export function registerStreams(app: FastifyInstance): void {
   });
 
   app.get<{
-    Params: {episodeId: string};
+    Params: { episodeId: string };
   }>('/streams/episode/:episodeId/playlist.m3u8', async (req, reply) => {
     const database = getDatabase();
 
     const episode = await database.query.episode.findFirst({
-      where(episode, {eq}) {
+      where(episode, { eq }) {
         return eq(episode.id, req.params.episodeId);
       },
       with: {
@@ -48,12 +48,12 @@ export function registerStreams(app: FastifyInstance): void {
       #EXT-X-TARGETDURATION:3
       #EXT-X-VERSION:3
       #EXT-X-MEDIA-SEQUENCE:1
-      ${Array.from({length: stream.numberOfChunks}, (_, idx) => {
-      return dedent`
+      ${Array.from({ length: stream.numberOfChunks }, (_, idx) => {
+        return dedent`
           #EXTINF:2.000000,
           /streams/${stream.id}/${String(idx).padStart(3, '0')}.ts
         `;
-    }).join('\n')}
+      }).join('\n')}
       #EXT-X-ENDLIST
     `;
 
@@ -61,7 +61,7 @@ export function registerStreams(app: FastifyInstance): void {
   });
 
   app.get<{
-    Params: {channelId: string};
+    Params: { channelId: string };
   }>('/streams/channel/:channelId/playlist.m3u8', async (req, reply) => {
     const database = getDatabase();
 
@@ -83,10 +83,10 @@ export function registerStreams(app: FastifyInstance): void {
       const sequenceStartAt = new Date(sequence * SEQUENCE_DURATION_MS);
 
       const program = await database.query.program.findFirst({
-        orderBy(program, {asc}) {
+        orderBy(program, { asc }) {
           return asc(program.startAt);
         },
-        where(program, {and, eq, lt, lte, sql}) {
+        where(program, { and, eq, lt, lte, sql }) {
           // 競技のため、時刻のみで比較する
           return and(
             lte(program.startAt, sql`time(${sequenceStartAt.toISOString()}, '+9 hours')`),
