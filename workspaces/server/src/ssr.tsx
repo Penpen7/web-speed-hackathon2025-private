@@ -27,7 +27,7 @@ export function registerSsr(app: FastifyInstance): void {
         </head>
         <body>
           <div id="root"></div>
-          <script src="/public/main.js"></script>
+          <script type="module" src="/public/main.js"></script>
         </body>
       </html>
     `);
