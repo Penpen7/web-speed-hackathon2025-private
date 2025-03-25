@@ -2,11 +2,8 @@ import { createFetch, createSchema } from '@better-fetch/fetch';
 import { StandardSchemaV1 } from '@standard-schema/spec';
 import * as schema from '@wsh-2025/schema/src/api/schema';
 
-import { schedulePlugin } from '@wsh-2025/client/src/features/requests/schedulePlugin';
-
 const $fetch = createFetch({
   baseURL: process.env['API_BASE_URL'] ?? '/api',
-  plugins: [schedulePlugin],
   schema: createSchema({
     '/signIn': {
       input: schema.signInRequestBody,
@@ -37,14 +34,20 @@ interface AuthService {
 
 export const authService: AuthService = {
   async fetchSignIn({ email, password }) {
-    const data = await $fetch('/signIn', { body: { email, password }, method: 'POST' });
+    const data = await $fetch('/signIn', {
+      body: { email, password },
+      method: 'POST',
+    });
     return data;
   },
   async fetchSignOut() {
     await $fetch('/signOut', { method: 'POST' });
   },
   async fetchSignUp({ email, password }) {
-    const data = await $fetch('/signUp', { body: { email, password }, method: 'POST' });
+    const data = await $fetch('/signUp', {
+      body: { email, password },
+      method: 'POST',
+    });
     return data;
   },
   async fetchUser() {
