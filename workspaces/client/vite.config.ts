@@ -1,9 +1,11 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "node:path";
+import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig({
   build: {
+    sourcemap: true,
     target: "es2015",
     outDir: "dist",
     rollupOptions: {
@@ -14,6 +16,14 @@ export default defineConfig({
         format: "es",
         dir: resolve(__dirname, "dist"),
       },
+      plugins: [
+        visualizer({
+          open: true,
+          gzipSize: true,
+          brotliSize: true,
+          filename: "dist/stats.html",
+        }),
+      ],
     },
   },
   plugins: [
