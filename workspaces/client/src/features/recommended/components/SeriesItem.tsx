@@ -1,6 +1,6 @@
 import Ellipsis from 'react-ellipsis-component';
-import {Flipped} from 'react-flip-toolkit';
-import {NavLink} from 'react-router';
+import { Flipped } from 'react-flip-toolkit';
+import { NavLink } from 'react-router';
 
 interface Props {
   series: {
@@ -10,19 +10,19 @@ interface Props {
   };
 }
 
-export const SeriesItem = ({series}: Props) => {
+export const SeriesItem = ({ series }: Props) => {
   return (
     <NavLink
       viewTransition
       className="block w-full cursor-pointer overflow-hidden hover:opacity-75"
       to={`/series/${series.id}`}
     >
-      {({isTransitioning}) => {
+      {({ isTransitioning }) => {
         return (
           <>
             <div className="relative overflow-hidden rounded-[8px] border-[2px] border-solid border-[#FFFFFF1F]">
               <Flipped stagger flipId={isTransitioning ? `series-${series.id}` : 0}>
-                <img alt="" width="272px" height="153px" src={series.thumbnailUrl} />
+                <img alt="" height="153px" src={series.thumbnailUrl} width="272px" />
               </Flipped>
             </div>
             <div className="p-[8px]">
